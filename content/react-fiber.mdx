@@ -1,0 +1,217 @@
+---
+title: "React Fiber Deep Dive: The Engine Behind Modern React"
+date: "2025-04-12"
+description: "Understanding how React Fiber transformed rendering into a cooperative scheduling system."
+readTime: "5 min"
+---
+
+## Why React Needed Fiber
+
+Early versions of React used a **stack-based reconciliation model**:
+
+- Rendering was synchronous  
+- Once started, it could not be interrupted  
+- Large updates blocked the main thread  
+
+👉 Result: dropped frames and unresponsive UI.
+
+---
+
+## What is React Fiber?
+
+React Fiber is a **reimplementation of the call stack in JavaScript**, transforming React into a **cooperative scheduler**.
+
+Instead of processing the entire tree at once, React now:
+
+- Breaks work into smaller units  
+- Schedules them based on priority  
+- Can pause, resume, or discard work  
+
+---
+
+## Core Idea: Work Units
+
+Each component becomes a **unit of work**, allowing React to:
+
+- Split rendering into chunks  
+- Yield control back to the browser  
+- Keep UI responsive  
+
+---
+
+## Key Capabilities Introduced
+
+### 🔹 Incremental Rendering
+- Breaks rendering into smaller tasks  
+- Avoids long blocking operations  
+
+---
+
+### 🔹 Time Slicing
+
+    <div className="not-prose w-full overflow-x-auto my-12">
+        <Mermaid chart="flowchart LR;
+            A[Start Rendering] --> B[Process Work Units];
+            B --> C{Time Slice Exhausted?};
+            C -- No --> B;
+            C -- Yes --> D[Yield to Browser];
+            D --> E[Handle Input / Paint / Animation];
+            E --> F[Resume Work];
+            F --> B;
+
+            classDef work fill:#6366f1,color:#fff;
+            classDef pause fill:#f59e0b,color:#000;
+            classDef browser fill:#22c55e,color:#000;
+
+            class B,F work;
+            class D pause;
+            class E browser;
+        " />
+    </div>
+
+- React yields control every few milliseconds  
+- Keeps input, animations, and scrolling smooth  
+
+---
+
+### 🔹 Concurrency
+- Multiple UI states can be prepared simultaneously  
+- High-priority updates interrupt low-priority work  
+
+---
+
+## Fiber Architecture (Visual)
+
+<div className="not-prose w-full my-12 text-2xl">
+  <div className="w-full overflow-x-auto">
+    <Mermaid chart="graph TD;
+    Root --> App;
+    Root --> Sidebar;
+    App --> Header;
+    App --> Content;
+    Content --> Article;
+    Content --> Comments;
+
+    classDef root fill:#6366f1,color:#fff;
+    classDef level1 fill:#8b5cf6,color:#fff;
+    classDef level2 fill:#22c55e,color:#000;
+    classDef level3 fill:#eab308,color:#000;
+
+    class Root root;
+    class App,Sidebar level1;
+    class Header,Content level2;
+    class Article,Comments level3;
+    " />
+    </div>
+</div>
+👉 Each node above is a **Fiber Node (unit of work)**
+
+---
+
+## Fiber Node Structure
+
+Each component is represented by a **Fiber Node** containing:
+
+- `child` → first child  
+- `sibling` → next sibling  
+- `return` → parent  
+
+👉 This forms a **linked structure**, not a simple tree.
+
+---
+
+## 🔁 Dual Tree (Double Buffering)
+
+React maintains two trees:
+
+- **Current Tree** → UI currently on screen  
+- **Work-in-Progress Tree** → UI being prepared  
+
+### Flow
+
+ <div className="not-prose my-12">
+  <Mermaid chart="flowchart TD;
+    A[Current Tree - UI on screen] --> B[Work in Progress Tree - updates applied];
+    B --> C[Commit Phase];
+    C --> D[Swap Trees - UI updated];
+  " />
+</div>
+
+👉 This ensures smooth updates without breaking UI
+
+---
+
+## 🚦 Lane-Based Priority System
+
+React assigns updates to **lanes (bitmasks)**:
+
+- **Discrete** → clicks, typing (highest priority)  
+- **Continuous** → scroll, drag  
+- **Default** → data updates  
+
+👉 High-priority updates can interrupt lower ones
+
+---
+
+## Rendering Phases
+<div className="not-prose w-full my-12 text-2xl">
+  <div className="w-full overflow-x-auto">
+        <Mermaid chart="graph LR;
+        Update --> Render;
+        Render -->|Interruptible| Reconcile;
+        Reconcile --> Commit;
+        Commit --> DOM;
+
+        classDef render fill:#8b5cf6,color:#fff;
+        classDef commit fill:#ec4899,color:#fff;
+
+        class Render,Reconcile render;
+        class Commit commit;
+        " />
+    </div>
+</div>
+
+### 1. Render Phase (Interruptible)
+
+- Builds the new tree  
+- Can be paused, resumed, or aborted  
+
+---
+
+### 2. Commit Phase (Synchronous)
+
+- Applies changes to the DOM  
+- Cannot be interrupted  
+
+---
+
+## End-to-End Flow
+
+    User Action
+        ↓
+    Schedule Update (Lane Priority)
+        ↓
+    Render Phase (Fiber Work Loop)
+        ↓
+    Pause / Resume if needed
+        ↓
+    Commit Phase
+        ↓
+    DOM Updated
+
+---
+
+## Why Fiber Matters
+
+Fiber enables React to:
+
+- Avoid blocking the main thread  
+- Prioritize important updates  
+- Deliver smoother user experiences  
+- Support modern features like streaming and concurrency  
+
+---
+
+## Key Takeaway
+
+> React is no longer just a rendering library — it is a **scheduler for UI work**.

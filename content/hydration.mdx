@@ -1,0 +1,72 @@
+---
+title: "Hydration & Partial Hydration: The Missing Piece of React Performance"
+date: "2025-04-12"
+description: "How modern React apps reduce JavaScript by hydrating only what matters."
+---
+
+## What is Hydration?
+
+    Server HTML → Attach JS → Interactive UI
+
+---
+
+## The Problem
+
+- Entire page is hydrated  
+- Requires full JS bundle  
+- Delays interactivity  
+
+---
+
+## Full Hydration
+
+    HTML Loaded
+      ↓
+    Load JS
+      ↓
+    Hydrate Entire App
+
+---
+
+## Partial Hydration
+
+    Header        → No JS
+    Content       → No JS
+    Like Button   → Hydrated
+    Comments      → Hydrated
+
+---
+
+## Hydration Flow
+
+    Server → Render HTML
+        ↓
+    Browser → Show UI
+        ↓
+    Hydrate interactive parts only
+
+---
+
+## Benefits
+
+- Less JavaScript  
+- Faster interaction  
+- Better performance  
+
+---
+
+## Evolution
+
+Old:
+
+    SSR → Full Hydration
+
+Modern:
+
+    SSR → Partial Hydration → Selective Interactivity
+
+---
+
+## Key Takeaway
+
+> Hydrate only what matters.

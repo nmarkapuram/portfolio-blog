@@ -1,0 +1,75 @@
+---
+title: "ADR: Choosing Next.js, Turbopack, and MDX for a Scalable Portfolio"
+description: "Key architectural decisions behind building a fast, scalable, and content-driven developer portfolio."
+date: "March 2026"
+readTime: "3 min read"
+---
+
+## Context
+
+As a frontend architect, I wanted my portfolio to reflect not just UI quality, but **architectural thinking**.
+
+The system needed to:
+
+- Deliver **high-quality, content-rich pages** using MDX  
+- Maintain a **fast developer feedback loop**  
+- Scale with minimal effort as new content is added  
+- Stay close to modern React and platform best practices  
+
+---
+
+## Decision
+
+### 1. Next.js App Router with Turbopack
+
+I chose **Next.js App Router** for its support of **server components, file-based routing, and hybrid rendering (SSG + SSR)**.
+
+For development performance, I opted for **Turbopack**, leveraging its Rust-based architecture for near-instant rebuilds.
+
+While integrating MDX, I encountered a limitation with plugin serialization in Turbopack.  
+This was addressed by using **string-based plugin configuration**, ensuring compatibility without sacrificing development speed.
+
+---
+
+### 2. MDX as the Content Layer
+
+MDX was selected to treat content as a **first-class part of the application**, not just static markdown.
+
+This enables:
+
+- Embedding **interactive React components** within blog posts  
+- Maintaining **co-location of content and presentation logic**  
+- Building a **content-driven architecture** with minimal overhead  
+
+Instead of managing a separate CMS, MDX keeps the system **simple, version-controlled, and developer-friendly**.
+
+---
+
+## Consequences
+
+### ✅ Benefits
+
+- **Scalable content model** — adding a new blog requires no additional code changes  
+- **Excellent performance** through static generation and optimized assets  
+- **Enhanced expressiveness** with interactive content inside articles  
+- **Fast developer experience** with Turbopack  
+
+---
+
+### ⚠️ Trade-offs
+
+- Turbopack ecosystem is still evolving, especially around MDX plugins  
+- Some features (like TOC generation) require custom implementation instead of relying on plugins  
+- Slight increase in initial setup complexity compared to plain Markdown  
+
+---
+
+## Result
+
+The final system achieves:
+
+- A **clean separation of content, data, and presentation layers**  
+- A **fast, modern developer experience**  
+- A **production-ready blog architecture** that can evolve incrementally  
+
+> “Architecture is about making decisions that remain sustainable under change. Choosing a compatible and scalable content pipeline early avoided future refactoring.”

@@ -1,5 +1,10 @@
+import Mermaid from "@/app/components/Mermaid";
+
+
 export function useMDXComponents(components) {
     return {
+      Mermaid,
+
       h1: (props) => (
         <h1 className="text-4xl font-bold mt-10 mb-4" {...props} />
       ),

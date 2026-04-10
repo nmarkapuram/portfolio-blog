@@ -1,0 +1,155 @@
+---
+title: "Scaling Angular Frontends: From Monoliths to Modular Systems with Nx"
+date: "2025-04-12"
+description: "How we scaled an Angular application using feature-based architecture and Nx monorepo to support large teams and parallel development."
+---
+
+## Tech Stack
+
+- **Framework**: Angular (Standalone APIs + NgModules)
+- **Monorepo Tooling**: :Nx
+- **State Management**: Service-driven reactive state using RxJS
+- **Styling**: Clarity Design System (in-house design system ensuring consistency and scalability)
+- **Architecture Approach**: Feature-based modular design
+
+---
+
+## Context
+
+As the application and team grew, we reached a point where **25+ engineers were working in parallel across multiple domains**.
+
+The existing Angular monolith, though structured using NgModules, began to show limitations:
+
+- Tight coupling across modules  
+- Increasing build times  
+- Frequent merge conflicts  
+- Difficulty in scaling teams independently  
+
+---
+
+## The Problem: Monolith at Scale
+
+The initial structure relied on:
+
+- Large `SharedModule` and `CoreModule`
+- Feature modules with implicit dependencies
+- A single deployable application
+
+Over time, this led to:
+
+- **Unclear ownership boundaries**
+- **Cross-team conflicts**
+- **Inefficient builds** — small changes triggering full app rebuilds  
+- Reduced developer productivity  
+
+---
+
+## The Shift: Monolith → Modular Monorepo
+
+The key realization was:
+
+> Scaling frontend systems requires not just modular code, but **modular builds and deployments**.
+
+To address this, we adopted a **monorepo architecture using Nx**, and restructured the system into:
+
+- **20+ feature-based applications**
+- A shared ecosystem of **libraries (libs)**
+
+---
+
+## The Solution: Nx Monorepo with Dependency-Aware Libraries
+
+Using :contentReference[oaicite:1]{index=1}, we decomposed the system into:
+
+### 🔹 Applications (`apps/`)
+- Feature-focused Angular applications  
+- Independently buildable and deployable  
+- Owned by specific teams  
+
+---
+
+### 🔹 Libraries (`libs/`)
+
+Libraries were designed based on **dependency graph analysis**, not just reuse.
+
+#### 1. Global Shared Libraries
+- Used across most applications  
+- Example: UI components, design system, core utilities  
+
+#### 2. Domain-Specific Libraries
+- Scoped to specific features or domains  
+- Example: Checkout, Orders, User Management  
+
+#### 3. Restricted-Scope Libraries
+- Used only by a subset of applications  
+- Designed intentionally to **limit blast radius of changes**
+
+---
+
+## Dependency Graph Strategy
+
+Nx provides a **dependency graph visualization**, which became a key design tool.
+
+We used it to:
+
+- Identify **high-impact shared libraries**
+- Avoid unnecessary dependencies between domains  
+- Ensure a **unidirectional dependency flow**  
+
+> Pages/Apps → Features → Entities → Shared
+
+---
+
+## Build Optimization Strategy
+
+One of the biggest wins came from **incremental builds**.
+
+With Nx:
+
+- Only **affected applications and libraries are rebuilt**
+- Changes in restricted-scope libs **do not trigger full rebuilds**
+- CI pipelines became significantly faster  
+
+This was achieved by:
+
+- Carefully designing **library boundaries**
+- Avoiding over-centralization of shared code  
+- Keeping dependencies **intentional and minimal**
+
+---
+
+## Architectural Impact
+
+### ✅ Benefits
+
+- **True parallel development** across 20+ applications  
+- **Significantly reduced build times** using affected builds  
+- **Clear ownership boundaries** across teams  
+- **Improved scalability** of both codebase and organization  
+
+---
+
+### ⚠️ Trade-offs
+
+- Increased complexity in repo structure  
+- Requires discipline in maintaining dependency boundaries  
+- Initial migration effort from monolith to monorepo  
+
+---
+
+## Real-World Outcome
+
+After adopting Nx and modular architecture:
+
+- Teams could work **independently without stepping on each other’s code**  
+- Build times improved due to **incremental compilation**  
+- Merge conflicts reduced significantly  
+- System became easier to scale with new teams and features  
+
+---
+
+## Key Takeaway
+
+Scaling frontend systems is not just about code organization — it’s about **aligning architecture with team structure and build systems**.
+
+> A well-designed monorepo with clear dependency boundaries enables teams to scale development without scaling complexity.

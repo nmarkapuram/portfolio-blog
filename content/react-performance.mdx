@@ -1,17 +1,70 @@
 ---
-title: "React in 2026"
-description: "Server components & streaming UI"
+title: "React Performance in 2026: Fiber, Virtual DOM, and Server-First Rendering"
+date
+description: "A deep dive into how React works under the hood and how Next.js enhances performance with server-first architecture."
+
 ---
 
-## React is becoming server-first
+## Why React Still Matters
 
-- Server Components
-- Streaming
-- Edge rendering
+Even in 2026, React continues to dominate not because of syntax — but because of its **rendering model and performance architecture**.
+
+To truly scale frontend systems, we need to understand:
+- How React renders
+- How updates are scheduled
+- What actually happens behind the Virtual DOM
+
+---
+
+## React Fiber: The Engine Behind the Scenes
+
+React Fiber is the **reconciliation engine** introduced to make rendering:
+
+- Incremental
+- Interruptible
+- Prioritized
+
+Instead of blocking the main thread, React breaks rendering into **units of work**.
+
+### Key Concepts
+
+- **Fiber Node**: Represents each component instance
+- **Work Loop**: Processes updates in chunks
+- **Priority Scheduling**: Important updates (like user input) are processed first
+
+> Fiber allows React to pause, resume, and even discard work — enabling smoother UI experiences.
+
+---
+
+## How Virtual DOM Actually Works
+
+The Virtual DOM is often misunderstood as a performance feature — but it’s actually an **abstraction layer**.
+
+### Step-by-step process:
+
+1. **Render Phase**
+   - React creates a new Virtual DOM tree
+   - Compares it with the previous tree (diffing)
+
+2. **Reconciliation**
+   - Determines minimal changes
+   - Uses heuristics (same type → reuse node)
+
+3. **Commit Phase**
+   - Applies changes to the real DOM
+   - This phase is synchronous
+
+---
+
+## Diffing Algorithm (Simplified)
+
+React uses an **O(n)** heuristic instead of expensive tree comparisons:
+
+- Same element type → update props
+- Different type → replace node
+- Lists → use `key` to track identity
 
 ```jsx
-export default async function Page() {
-  const data = await fetchData();
-  return <div>{data}</div>;
-}
-```
+{items.map(item => (
+  <Item key={item.id} />
+))}

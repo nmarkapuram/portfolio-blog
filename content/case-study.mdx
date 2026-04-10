@@ -1,0 +1,166 @@
+---
+title: "Case Study: Scaling Frontend from Monolith to Nx Monorepo"
+date: "2025-04-15"
+description: "How we transformed a monolithic Angular application into a scalable monorepo with 20+ applications."
+---
+
+## 🚨 The Problem
+
+We started with a **single Angular monolith**:
+
+- 25+ developers working in parallel  
+- Frequent merge conflicts  
+- Slow builds and deployments  
+- Tight coupling between features  
+
+👉 Result: **Developer velocity dropped significantly**
+
+---
+
+## ⚠️ Constraints
+
+This wasn’t a greenfield rewrite.
+
+- Business-critical product (no downtime allowed)  
+- Continuous feature delivery required  
+- Shared design system dependencies  
+- Large existing codebase  
+
+👉 We needed **incremental evolution, not a rewrite**
+
+---
+
+## 🧠 The Decision
+
+We moved to:
+
+- **Nx Monorepo**
+- **Feature-based application split**
+- **Library-driven architecture**
+
+---
+
+## 🏗️ Target Architecture
+
+<div className="not-prose my-12 text-lg">
+  <div className="overflow-x-auto min-w-[800px]">
+    <Mermaid chart="graph TD;
+      Monolith --> App1;
+      Monolith --> App2;
+      Monolith --> App3;
+      App1 --> LibShared;
+      App2 --> LibShared;
+      App3 --> LibShared;
+      LibShared --> DesignSystem;
+      LibShared --> Utilities;
+    " />
+  </div>
+</div>
+
+---
+
+## 🧩 Architecture Strategy
+
+### 1. Application Decomposition
+
+We split the monolith into:
+
+- 20+ **feature-based applications**
+- Each owned by independent teams
+
+👉 Enabled **parallel development at scale**
+
+---
+
+### 2. Library-First Design
+
+We extracted shared logic into **libraries**:
+
+- **Core libs** → used by most applications  
+- **Feature libs** → scoped to specific domains  
+- **Utility libs** → reusable helpers  
+
+👉 Designed using **dependency graph principles**
+
+---
+
+### 3. Dependency Optimization
+
+Not all libs are equal:
+
+- High-impact libs → stable, widely shared  
+- Low-impact libs → isolated to avoid rebuild cascade  
+
+👉 Prevented **full repo rebuilds**
+
+---
+
+## ⚙️ Tooling
+
+- **Framework**: Angular  
+- **Monorepo**: Nx  
+- **State**: RxJS (reactive streams, not centralized store)  
+- **Design System**: In-house (Clarity-based)  
+
+---
+
+## 🚀 Execution Strategy
+
+We followed an **incremental migration**:
+
+1. Identify bounded contexts  
+2. Extract into libraries  
+3. Create new applications  
+4. Gradually route traffic  
+
+👉 Zero downtime migration
+
+---
+
+## 📊 Impact
+
+### Before
+- Long build times  
+- Merge conflicts  
+- Tight coupling  
+
+### After
+- ⚡ Faster builds (selective builds via Nx)
+- 🤝 Reduced merge conflicts  
+- 🚀 Parallel team scalability  
+- 🧩 Clear ownership boundaries  
+
+---
+
+## 🧠 Key Learnings
+
+### 🔹 Architecture is about boundaries
+Folder structure ≠ architecture  
+Clear ownership is the real scalability lever
+
+---
+
+### 🔹 Dependency graph matters more than code
+How modules depend on each other defines performance
+
+---
+
+### 🔹 Monorepo ≠ coupling
+With proper boundaries, it enables:
+- Faster builds
+- Better reuse
+- Stronger consistency
+
+---
+
+## 🏁 Final Thought
+
+> Scaling frontend isn’t about adding more components  
+> It’s about **designing systems that scale across teams**
+
+---
+
+## 🔗 What’s Next
+
+- Explore how this integrates with **Micro Frontends**
+- Compare with **Module Federation approaches**

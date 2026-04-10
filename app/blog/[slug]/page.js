@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPostBySlug } from "@/lib/posts";
-import Image from "next/image";
+import Mermaid from "@/app/components/Mermaid";
+
 
 export default async function Post({ params }) {
   const { slug } = await params;
@@ -44,7 +45,7 @@ export default async function Post({ params }) {
     <div className="flex justify-center">
       <article
         className="
-          prose prose-invert max-w-3xl w-full
+          prose prose-invert max-w-5xl
           prose-headings:scroll-mt-24
           prose-a:text-blue-400 hover:prose-a:text-blue-300
           prose-pre:bg-slate-900
@@ -54,7 +55,9 @@ export default async function Post({ params }) {
           prose-p:text-gray-300
         "
       >
-        <MDXRemote source={post.content} />
+        <MDXRemote source={post.content} components={{
+          Mermaid, // 👈 REQUIRED HERE
+        }}/>
       </article>
     </div>
 
