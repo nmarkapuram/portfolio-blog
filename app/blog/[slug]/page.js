@@ -42,24 +42,27 @@ export default async function Post({ params }) {
     </div>
 
     {/* CONTENT AREA */}
-    <div className="flex justify-center">
-      <article
-        className="
-          prose prose-invert max-w-5xl
-          prose-headings:scroll-mt-24
-          prose-a:text-blue-400 hover:prose-a:text-blue-300
-          prose-pre:bg-slate-900
-          prose-pre:border prose-pre:border-white/10
-          prose-pre:rounded-lg
-          prose-code:text-blue-300
-          prose-p:text-gray-300
-        "
-      >
-        <MDXRemote source={post.content} components={{
-          Mermaid, // 👈 REQUIRED HERE
-        }}/>
-      </article>
-    </div>
+    <div className="w-full">
+    <article
+      className="
+        prose prose-invert max-w-none
+        prose-headings:scroll-mt-24
+        prose-a:text-blue-400 hover:prose-a:text-blue-300
+        prose-pre:bg-slate-900
+        prose-pre:border prose-pre:border-white/10
+        prose-pre:rounded-lg
+        prose-code:text-blue-300
+        prose-p:text-gray-300
+      "
+    >
+      <MDXRemote
+        source={post.content}
+        components={{
+          Mermaid,
+        }}
+      />
+    </article>
+</div>
 
   </div>
 </div>

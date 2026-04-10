@@ -9,12 +9,12 @@ const posts = [
     description: "How scheduling transformed UI rendering",
   },
   {
-    slug: "server-rendering",
-    title: "Server-First Rendering",
-    description: "Why React is moving to the server",
+    slug: "angular-future",
+    title: "Future of Angular",
+    description: "Signals, hydration, and standalone components",
   },
   {
-    slug: "scaling-frontends",
+    slug: "scaling-frontend-systems",
     title: "Scaling Frontends with Nx",
     description: "Managing large teams with modular architecture",
   },

@@ -26,9 +26,9 @@ const posts = [
     image: "/images/angular.jpg",
   },
   {
-    slug: 'react-performance',
-    title: 'React Performance in 2026: Fiber, Virtual DOM, and Server-First Rendering',
-    description: 'Optimizing React apps for performance',
+    slug: 'hydration',
+    title: 'Hydration & Partial Hydration: The Missing Piece of React Performance',
+    description: 'How modern React apps reduce JavaScript by hydrating only what matters.',
     image: '/images/react.jpg',
   },
   {
