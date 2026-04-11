@@ -1,0 +1,148 @@
+---
+title: "Frontend Performance at Scale"
+description: "Architecting for speed: Beyond optimization to performance guardrails."
+---
+
+## Performance is an Architectural Concern
+
+Performance is not something you "fix later"—it is something you **design upfront**.
+
+At scale, performance issues are rarely caused by one bad decision.  
+They emerge from **small inefficiencies compounded across teams, components, and releases**.
+
+👉 The role of architecture is to introduce **guardrails**, not just optimizations.
+
+---
+
+## The Design System × Performance Synergy
+
+A well-architected Design System (like Clarity) becomes a **force multiplier for performance**.
+
+- **Shared Assets**  
+  Centralized, optimized assets (e.g., SVG sprites) eliminate duplication across applications  
+
+- **Tree-shakable Components**  
+  ESM-based distribution ensures only used components are bundled  
+
+- **Zero-runtime Styling**  
+  Prefer CSS Modules / utility-first CSS to avoid runtime style computation overhead  
+
+👉 A Design System doesn’t just ensure consistency—it enforces **performance by default**
+
+---
+
+## Rendering & Execution Model
+
+<div className="not-prose my-12">
+  <div className="min-w-[700px]">
+    <Mermaid chart="graph LR
+      Input[User Interaction] --> MainThread
+      MainThread --> Render
+      Render --> Commit
+      Commit --> DOM
+
+      MainThread -->|Blocked| Jank[UI Jank]
+
+      classDef danger fill:#ef4444,color:#fff;
+      class Jank danger;
+    " />
+  </div>
+</div>
+
+👉 Performance bottlenecks often come from **main-thread blocking**, not network alone.
+
+---
+
+## Technical Strategies
+
+### 🔹 1. Image & Asset Intelligence
+
+- **Modern Formats**  
+  Use WebP / AVIF for smaller payloads  
+
+- **Responsive Loading**  
+  Serve correctly sized images based on viewport  
+
+- **Lazy Loading**  
+  Defer non-critical assets below the fold  
+
+- **Font Strategy**  
+  Use `font-display: swap` to avoid invisible text  
+
+---
+
+### 🔹 2. JavaScript & Bundle Control
+
+- **Code Splitting**  
+  Load only what is needed per route  
+
+- **Dynamic Imports**  
+  Defer heavy components (charts, editors, modals)  
+
+- **Dependency Discipline**  
+  Audit libraries—most performance issues come from unnecessary dependencies  
+
+---
+
+### 🔹 3. Execution & Scheduling
+
+- **React Fiber (Concurrent Rendering)**  
+  Keeps UI responsive by interrupting long renders  
+
+- **Debounce / Throttle**  
+  Control high-frequency events (scroll, resize, input)  
+
+- **Web Workers**  
+  Move heavy computations off the main thread  
+
+👉 The goal is simple: **keep the main thread free**
+
+---
+
+## The Architect’s Pre-Ship Checklist
+
+Before any feature reaches production, it must pass a **performance audit**.
+
+---
+
+### ✅ Asset Optimization
+
+- [ ] Images use modern formats and have defined dimensions  
+- [ ] Fonts use `font-display: swap`  
+- [ ] Third-party scripts are deferred or offloaded  
+
+---
+
+### ✅ Code & Bundle Health
+
+- [ ] Bundle size increase is within acceptable limits  
+- [ ] No unused dependencies or dead code  
+- [ ] Heavy components are dynamically loaded  
+
+---
+
+### ✅ Runtime Efficiency
+
+- [ ] **INP Check:** No interaction blocks the main thread > 50ms  
+- [ ] **Re-render Audit:** Expensive components are memoized appropriately  
+- [ ] **Streaming Ready:** Slow components wrapped in Suspense boundaries  
+
+---
+
+## Proven Impact
+
+In production systems, these practices resulted in:
+
+- **~40% reduction** in JavaScript execution time  
+- **~60% improvement in INP** by offloading heavy logic to Web Workers  
+- Consistent **high Lighthouse scores** on critical user journeys  
+
+👉 The biggest wins came from **eliminating unnecessary work**, not micro-optimizations
+
+---
+
+## Takeaway
+
+> High performance is not achieved through one optimization.
+>
+> It is the result of **hundreds of small decisions**, enforced through architecture, tooling, and discipline.

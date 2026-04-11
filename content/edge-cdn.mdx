@@ -1,0 +1,115 @@
+---
+title: "Edge Rendering & CDN Strategy"
+description: "Architecting for global scale by moving compute closer to the user."
+---
+
+## Why Edge?
+
+Traditional SSR centralizes compute at the origin, creating a **latency bottleneck at global scale**.
+
+As applications grow, performance is no longer just about rendering speed — it's about **distance from the user**.
+
+Edge computing shifts execution closer to users by running logic inside **Points of Presence (PoPs)** distributed globally.
+
+- **Reduced Latency:** Compute executes near the user, minimizing network round trips.  
+- **Improved Security:** DDoS mitigation and request filtering at the edge layer.  
+- **Lightweight Runtimes:** V8 isolates enable sub-millisecond startup times.  
+
+---
+
+## Architecture Overview
+
+<div className="not-prose my-12">
+  <Mermaid chart="graph LR;
+    User --> Anycast;
+    Anycast --> Edge;
+    Edge --> Cache;
+    Cache -->|Miss| Origin;
+
+    classDef edge fill:#6366f1,color:#fff;
+    classDef cache fill:#22c55e,color:#000;
+
+    class Edge edge;
+    class Cache cache;
+  " />
+</div>
+
+---
+
+## Advanced Use Cases
+
+### 🔸 Dynamic Personalization
+Inject user-specific data at the edge without invalidating the full cache.
+
+👉 Keep personalization **shallow and cache-friendly**.
+
+---
+
+### 🔸 A/B Testing
+Execute bucketing logic at the edge to avoid client-side flicker and layout shifts.
+
+👉 Edge-based experiments improve both **UX and metric accuracy**.
+
+---
+
+### 🔸 Localization
+Use Geo-IP routing for instant language and currency decisions.
+
+👉 Avoid round trips to origin for regional logic.
+
+---
+
+## The Architect’s Approach
+
+### 🔹 Stale-While-Revalidate (SWR)
+Serve cached responses instantly while refreshing data in the background.
+
+👉 Balances performance with freshness.
+
+---
+
+### 🔹 Granular Cache Invalidation
+Use tag-based purging instead of clearing entire caches.
+
+👉 Reduces blast radius and improves cache efficiency.
+
+---
+
+### 🔹 Edge vs Origin Responsibilities
+
+Keep logic at the edge **lightweight and deterministic**.
+
+- **Edge →** routing, auth, personalization  
+- **Origin →** heavy business logic, database access  
+
+👉 Misplacing logic at the edge increases cost and complexity.
+
+---
+
+## Common Pitfalls
+
+- **Overloading the Edge:** Running heavy business logic increases latency and cost.  
+- **Cache Invalidation Bugs:** Poor invalidation strategies can serve stale or incorrect data.  
+- **Vendor Lock-in:** Deep coupling with edge platforms can reduce portability.  
+
+👉 The edge should enhance delivery, not replace your backend.
+
+---
+
+## Case Insight (Practical Impact)
+
+In large-scale systems:
+
+- Edge-based routing reduced **TTFB by ~30–50% globally**  
+- Moving A/B logic to the edge eliminated **layout shifts caused by client-side tools**  
+- Cache-first strategy reduced origin load significantly  
+
+👉 The biggest gains came from **moving decisions closer to the user**, not just content.
+
+---
+
+## Key Takeaway
+
+> Don't just move data — move **decision-making closer to the user**.  
+>  
+> The Edge is best used for **latency-sensitive logic**, not heavy computation.

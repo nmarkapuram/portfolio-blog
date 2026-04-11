@@ -20,6 +20,15 @@ const posts = [
   },
 ];
 
+const domains = [
+  { name: "Micro Frontends", slug: "micro-frontends", id:1 },
+  { name: "SSR / Streaming", slug: "ssr-streaming", id: 2 },
+  { name: "Design Systems", slug: "design-systems", id: 3 },
+  { name: "Performance Optimization", slug: "performance", id:4 },
+  { name: "Edge + CDN Strategy", slug: "edge-cdn", id:5 },
+  { name: "Frontend Observability", slug: "observability", id:6 },
+];
+
 export default function Home() {
   return (
     <div className="space-y-24">
@@ -98,20 +107,12 @@ export default function Home() {
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              "Micro Frontends",
-              "SSR / Streaming",
-              "Design Systems",
-              "Performance Engineering",
-              "Edge + CDN Strategy",
-              "Frontend Observability",
-            ].map((item) => (
-              <div
-                key={item}
-                className="p-6 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition"
-              >
-                {item}
+            {domains.map((item) => (
+              <Link href={`/blog/${item.slug}`} key={item.id}>
+              <div className="p-6 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition cursor-pointer">
+                {item.name}
               </div>
+            </Link>
             ))}
           </div>
         </section>

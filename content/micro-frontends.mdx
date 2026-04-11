@@ -1,0 +1,152 @@
+---
+title: "Micro Frontends at Scale: Architecting for Autonomy"
+description: "Going beyond the hype to solve organizational bottlenecks through technical decoupling."
+---
+
+## The "Why": Solving for People, Not Pixels
+
+As engineering organizations scale, frontend monoliths stop being a technical problem — they become an **organizational bottleneck**.
+
+Teams slow down not because of code complexity, but because of:
+
+- Cross-team dependencies  
+- Release coordination  
+- Unclear ownership  
+
+Micro Frontends (MFEs) emerge as a way to restore **team autonomy** — not just modularity.
+
+---
+
+## Architectural Patterns
+
+### 🔹 Runtime Orchestration (Module Federation)
+
+The most widely adopted approach today.
+
+- **Pros:**
+  - Independent deployments  
+  - Shared dependencies (React, Design System)  
+  - Faster iteration cycles  
+
+- **Risks:**
+  - Version mismatch ("Version Hell")  
+  - Runtime failures are harder to debug  
+
+👉 **Use when:** Teams need true deployment independence.
+
+---
+
+### 🔹 Build-time Composition
+
+A safer, more controlled model.
+
+- **Pros:**
+  - Strong type safety  
+  - Easier testing and CI/CD pipelines  
+
+- **Cons:**
+  - Slower deployments  
+  - Reduced autonomy  
+
+👉 **Use when:** Stability and consistency matter more than speed.
+
+---
+
+## The "Hard Parts" (Where Most Implementations Fail)
+
+### 🔸 Shared State
+
+Avoid global stores across MFEs.
+
+Prefer:
+
+- URL as the source of truth  
+- Custom events for loose coupling  
+
+👉 Shared state is the fastest way to accidentally rebuild a monolith.
+
+---
+
+### 🔸 CSS Contamination
+
+Without strict isolation, styles will leak.
+
+Solutions:
+
+- CSS Modules  
+- Scoped styling (or Shadow DOM if needed)  
+
+👉 If two teams fight over `z-index`, your architecture has already failed.
+
+---
+
+### 🔸 Payload Bloat
+
+Multiple bundles = performance risk.
+
+Mitigation strategies:
+
+- Shared dependency federation  
+- Route-based prefetching  
+- Lazy loading per domain  
+
+👉 Poor performance will erase all gains from team autonomy.
+
+---
+
+## Architecture Overview
+
+<div className="not-prose my-12">
+  <Mermaid chart="graph LR;
+    User --> Shell;
+    Shell --> Header;
+    Shell --> CheckoutApp;
+    Shell --> SearchApp;
+    Shell --> ProfileApp;
+
+    classDef shell fill:#6366f1,color:#fff;
+    classDef mfe fill:#22c55e,color:#000;
+
+    class Shell shell;
+    class CheckoutApp,SearchApp,ProfileApp mfe;
+  " />
+</div>
+
+---
+
+## Strategic Governance (Non-Negotiables)
+
+1. **Domain-Driven Design (DDD)**  
+   Split by business capability — never by technical layers.
+
+2. **Shared Design System**  
+   Mandatory for visual consistency and faster development.
+
+3. **Dependency Boundaries**  
+   Enforce via tooling (Nx, Module Federation constraints).
+
+4. **Automated Contracts**  
+   Use Playwright/Cypress to validate cross-MFE workflows.
+
+👉 Governance is what turns MFEs from chaos into a scalable system.
+
+---
+
+## Case Study: From Monolith to 20+ Applications
+
+In a recent system:
+
+- Split into 20+ domain-driven applications  
+- Adopted Nx monorepo for shared libraries  
+- Reduced cross-team merge conflicts by ~60%  
+
+👉 The biggest win wasn’t technical — it was **team velocity and ownership clarity**.
+
+---
+
+> **Final Takeaway:**  
+> Micro frontends are not a scaling strategy for code —  
+> they are a scaling strategy for **teams**.  
+>
+> If your organization doesn’t need autonomy yet,  
+> a monolith will always be faster, simpler, and cheaper.

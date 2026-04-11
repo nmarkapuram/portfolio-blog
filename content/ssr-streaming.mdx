@@ -1,0 +1,121 @@
+---
+title: "Modern Rendering in 2026: SSR, Streaming & The Edge"
+description: "Moving beyond monolithic rendering to a component-level strategy."
+---
+
+## The Evolution of the Web
+
+Rendering has evolved from a **monolithic, blocking process** to a **progressive, component-level strategy**.
+
+- **CSR (Client-Side Rendering):** High interactivity, but suffers from poor SEO and delayed first paint ("white screen").
+- **SSR / SSG:** Improves SEO and initial load, but still blocks the user until the **entire page** is generated.
+- **Streaming (Modern SSR):** Breaks HTML into chunks, allowing the browser to render UI **incrementally** as data becomes available.
+
+---
+
+## The Power of Streaming & Suspense
+
+With modern frameworks like Next.js, rendering is no longer a page-level decision.
+
+Using `<Suspense>` boundaries, we can:
+
+1. **Prioritize Above-the-Fold Content**  
+   Render critical UI immediately while deferring non-essential parts.
+
+2. **Stream Slow Components**  
+   Components with heavy data dependencies (e.g., recommendations, analytics) are sent later without blocking the page.
+
+3. **Enable Progressive Hydration**  
+   The page becomes interactive in stages instead of waiting for full hydration.
+
+👉 This shifts rendering from:
+
+**"wait-then-render" → "render-as-you-fetch"**
+
+---
+
+## Rendering Flow (Streaming)
+
+<div className="not-prose my-12">
+  <div className="min-w-[700px]">
+    <Mermaid chart="sequenceDiagram
+      participant Browser
+      participant Server
+
+      Browser->>Server: Request Page
+      Server-->>Browser: HTML Shell (Header)
+      Server-->>Browser: Chunk 1 (Above the fold)
+      Server-->>Browser: Chunk 2 (Main Content)
+      Server-->>Browser: Chunk 3 (Recommendations / Lazy Blocks)
+    " />
+  </div>
+</div>
+
+---
+
+## Architectural Strategy: The "90/10 Rule"
+
+In large-scale systems, not all UI deserves the same rendering strategy.
+
+A practical distribution:
+
+- **Static Content (ISR)**  
+  Marketing pages, blogs, documentation  
+  👉 Revalidated periodically
+
+- **Critical Dynamic Content (SSR)**  
+  Pricing, availability, SEO-sensitive data  
+  👉 Must be fresh on every request
+
+- **Non-Critical UI (Streaming)**  
+  Sidebars, recommendations, dashboards  
+  👉 Loaded progressively without blocking
+
+👉 The goal is to **minimize blocking work on the critical path**
+
+---
+
+## Why it Matters to the Business
+
+- **Core Web Vitals**
+  - Faster **LCP** due to early HTML delivery  
+  - Improved **TTFB** through edge + streaming  
+
+- **User Experience**
+  - Reduced "blank screen" perception  
+  - Faster perceived interactivity  
+
+- **Infrastructure Efficiency**
+  - Streaming avoids holding full responses in memory  
+  - Better resource utilization under high load  
+
+---
+
+## Real-World Impact
+
+In production systems:
+
+- Streaming reduced **LCP from ~3.2s → ~1.8s**
+- Eliminated layout shifts caused by client-side rendering delays
+- Reduced backend memory pressure during peak traffic
+
+👉 The biggest gains came from **removing blocking work**, not just optimizing code
+
+---
+
+## Connecting with the Edge
+
+Streaming works best when combined with edge infrastructure:
+
+- **Edge → reduces distance (latency)**
+- **Streaming → reduces blocking (render time)**
+
+👉 Together, they form a **performance multiplier**
+
+---
+
+## Takeaway
+
+> Modern rendering is no longer a framework decision — it's a **component-level strategy**.
+>
+> The best systems combine **SSR, Streaming, and Edge rendering** to optimize both performance and user experience.

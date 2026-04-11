@@ -1,0 +1,172 @@
+---
+title: "Building Scalable Design Systems: Bridging Design & Engineering"
+description: "How Design Tokens create a shared language between designers and developers at scale."
+---
+
+## The Problem: The "Translation" Gap
+
+In large-scale systems, inconsistency is rarely a design problem—it’s a **communication problem**.
+
+Designers think in **intent**:
+- “Primary action”
+- “High emphasis”
+- “Subtle elevation”
+
+Developers implement in **values**:
+- `#0072bc`
+- `16px`
+- `box-shadow: ...`
+
+👉 Without a shared system, this leads to:
+
+- **Design Debt:** Same problems solved differently across teams  
+- **Hard-coded Values:** "Magic numbers" scattered across codebases  
+- **Fragmented UX:** Product feels like multiple apps stitched together  
+
+---
+
+## The Bridge: Design Tokens
+
+Design Tokens act as a **shared language layer** between Design and Engineering.
+
+Instead of hardcoding values:
+
+    color: #0072bc;
+    padding: 16px;
+
+We define:
+
+    color: var(--clr-action-600);
+    padding: var(--space-m);
+
+---
+
+### Token Mapping
+
+| Feature | Design Intent | Token Name | Technical Value |
+|--------|--------------|-----------|----------------|
+| **Color** | Brand Primary | `--clr-action-600` | `#0072bc` |
+| **Spacing** | Standard Padding | `--space-m` | `1rem` |
+| **Shadow** | Elevation Level 2 | `--shadow-raised` | `0 4px 12px rgba(0,0,0,0.1)` |
+
+👉 Designers use **semantic intent**  
+👉 Developers consume **stable contracts**
+
+---
+
+## How It Connects Design → Code
+
+<div className="not-prose my-12">
+  <div className="min-w-[700px]">
+    <Mermaid chart="flowchart LR
+      Figma[Design (Figma)] --> Tokens[Design Tokens]
+      Tokens --> JSON[Token Source (JSON)]
+      JSON --> Web[Web (CSS Variables)]
+      JSON --> Mobile[Mobile (iOS / Android)]
+      Web --> UI[UI Components]
+      Mobile --> UI
+    " />
+  </div>
+</div>
+
+👉 Tokens become the **single source of truth** across platforms.
+
+---
+
+## My Architectural Approach
+
+### 🔹 1. Multi-Tier Token Taxonomy
+
+A scalable system requires **structured abstraction**, not just variables.
+
+- **Global Tokens (Raw Values)**  
+  `blue-500`, `spacing-4`  
+
+- **Alias / Semantic Tokens (Intent Layer)**  
+  `text-primary`, `bg-surface`  
+
+- **Component Tokens (Scoped Usage)**  
+  `btn-primary-bg`, `card-shadow`  
+
+👉 This prevents **tight coupling between design intent and raw values**
+
+---
+
+### 🔹 2. Component System Thinking
+
+A design system is not a component library—it’s a **layered architecture**.
+
+- **Foundations**  
+  Typography, Grid, Colors, Spacing  
+
+- **Primitives**  
+  Buttons, Inputs, Icons (stateless, reusable)  
+
+- **Compositions**  
+  Modals, Tables, Forms (business-aware patterns)  
+
+👉 Each layer builds on the previous without duplication
+
+---
+
+### 🔹 3. Cross-Team Contract (Critical Insight)
+
+Design tokens act as a **contract boundary**:
+
+- Designers define **what it means**
+- Engineers define **how it behaves**
+
+👉 This eliminates back-and-forth like:
+
+“Is this blue correct?”  
+“Spacing looks slightly off”
+
+---
+
+## Scaling in Enterprise Systems
+
+In enterprise design systems (like Clarity), scale introduces new challenges:
+
+### 🔸 Versioning Strategy
+- Semantic versioning for components and tokens  
+- Backward compatibility for consuming applications  
+
+### 🔸 The Contribution Model
+- Teams contribute patterns via RFCs  
+- Central system team governs consistency  
+
+### 🔸 Tooling & Automation
+- Lint rules to block hardcoded values  
+- Token pipelines (JSON → CSS / TS / Mobile)  
+- Visual regression testing  
+
+---
+
+## The Real Challenge: Adoption
+
+Building the system is easy. Getting teams to **use it correctly** is hard.
+
+Successful systems focus on:
+
+- **Developer Experience (DX):** Easy imports, great docs  
+- **Design Tooling:** Seamless Figma integration  
+- **Education:** Guidelines, examples, anti-patterns  
+
+👉 A design system fails not when it’s wrong—but when it’s **ignored**
+
+---
+
+## Why it Matters
+
+- **Consistency at Scale** → Unified product experience  
+- **Faster Development** → No reinvention of UI patterns  
+- **Easier Theming** → Rebrand by changing tokens, not code  
+- **Cross-Platform Alignment** → Web + Mobile stay in sync  
+
+---
+
+## Takeaway
+
+> A design system is not a UI library—it’s a **contract**.
+>
+> It aligns designers and engineers through a shared language, enabling systems to scale without losing consistency or velocity.
