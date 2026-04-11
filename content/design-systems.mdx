@@ -43,29 +43,39 @@ We define:
 
 ### Token Mapping
 
-| Feature | Design Intent | Token Name | Technical Value |
-|--------|--------------|-----------|----------------|
-| **Color** | Brand Primary | `--clr-action-600` | `#0072bc` |
-| **Spacing** | Standard Padding | `--space-m` | `1rem` |
-| **Shadow** | Elevation Level 2 | `--shadow-raised` | `0 4px 12px rgba(0,0,0,0.1)` |
+- **Color**
+  - Intent: Brand Primary  
+  - Token: `--clr-action-600`  
+  - Value: `#0072bc`  
 
-👉 Designers use **semantic intent**  
-👉 Developers consume **stable contracts**
+- **Spacing**
+  - Intent: Standard Padding  
+  - Token: `--space-m`  
+  - Value: `1rem`  
+
+- **Shadow**
+  - Intent: Elevation Level 2  
+  - Token: `--shadow-raised`  
+  - Value: `0 4px 12px rgba(0,0,0,0.1)`  
+
+👉 Designers use semantic intent  
+👉 Developers consume stable contracts
 
 ---
 
 ## How It Connects Design → Code
 
 <div className="not-prose my-12">
-  <div className="min-w-[700px]">
-    <Mermaid chart="flowchart LR
-      Figma[Design (Figma)] --> Tokens[Design Tokens]
-      Tokens --> JSON[Token Source (JSON)]
-      JSON --> Web[Web (CSS Variables)]
-      JSON --> Mobile[Mobile (iOS / Android)]
-      Web --> UI[UI Components]
-      Mobile --> UI
-    " />
+  <div className="min-w-[900px]">
+    <Mermaid
+      chart={`flowchart LR
+Figma[Design - Figma] --> Tokens[Design Tokens]
+Tokens --> JSON[Token Source - JSON]
+JSON --> Web[Web - CSS Variables]
+JSON --> Mobile[Mobile - iOS / Android]
+Web --> UI[UI Components]
+Mobile --> UI`}
+    />
   </div>
 </div>
 
