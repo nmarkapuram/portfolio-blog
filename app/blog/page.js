@@ -1,58 +1,47 @@
-import Link from 'next/link';
-
-const posts = [
-  {
-    slug: 'architecting-portfolio',
-    title: 'Architecting Portfolio',
-    description: 'Lessons learned from scaling a frontend architecture to support 50+ developers.',
-    image: '/images/portfolio.jpg',
-  },
-  {
-    slug: 'scaling-frontend-systems',
-    title: 'Scaling Angular Frontends: From Monoliths to Modular Systems with Nx',
-    description: 'Lessons learned from scaling a frontend architecture to support 50+ developers.',
-    image: '/images/portfolio.jpg',
-  },
-  {
-    slug: 'react-fiber',
-    title: 'React Fiber: The Heart of React Performance',
-    description: 'A deep dive into how React Fiber works and how it impacts performance.',
-    image: '/images/react.jpg',
-  },
-  {
-    slug: "angular-future",
-    title: "Future of Angular",
-    description: "Signals, hydration, and standalone components",
-    image: "/images/angular.jpg",
-  },
-  {
-    slug: 'hydration',
-    title: 'Hydration & Partial Hydration: The Missing Piece of React Performance',
-    description: 'How modern React apps reduce JavaScript by hydrating only what matters.',
-    image: '/images/react.jpg',
-  },
-  {
-    slug: 'case-study',
-    title: "Case Study: Scaling Frontend from Monolith to Nx Monorepo",
-    description: "How we transformed a monolithic Angular application into a scalable monorepo with 20+ applications.",
-    image: "/images/angular.jpg",
-  }
-
-];
+import Link from "next/link";
+import { getAllPosts } from "@/lib/posts";
 
 export default function BlogPage() {
+  const posts = getAllPosts();
+
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Blog</h1>
-      <ul className="space-y-4">
-        {posts.map(post => (
-          <li key={post.slug}>
-            <Link href={`/blog/${post.slug}`} className="text-blue-400">
-              {post.title}
-            </Link>
-          </li>
+    <div className="space-y-12">
+      {/* Header */}
+      <div>
+        <h1 className="text-4xl font-bold mb-2">Insights</h1>
+        <p className="text-gray-400 max-w-2xl">
+          Deep dives into frontend architecture, performance, and system design.
+        </p>
+      </div>
+
+      {/* Featured Post */}
+      {posts[0] && (
+        <Link href={`/blog/${posts[0].slug}`}>
+          <div className="group border border-white/10 rounded-2xl p-8 mb-4 bg-gradient-to-br from-white/5 to-white/0 hover:border-blue-500/40 transition">
+            <p className="text-sm text-blue-400 mb-2">Featured</p>
+            <h2 className="text-2xl font-semibold mb-3 group-hover:text-blue-400 transition">
+              {posts[0].title}
+            </h2>
+            <p className="text-gray-400">{posts[0].description}</p>
+          </div>
+        </Link>
+      )}
+
+      {/* Grid */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {posts.slice(1).map((post) => (
+          <Link key={post.slug} href={`/blog/${post.slug}`}>
+            <div className="group h-full border border-white/10 rounded-xl p-6 bg-white/5 hover:border-blue-500/40 hover:-translate-y-1 transition">
+              <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-400 transition">
+                {post.title}
+              </h3>
+              <p className="text-sm text-gray-400">
+                {post.description}
+              </p>
+            </div>
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
