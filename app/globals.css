@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
 prose {
     line-height: 1.75;
   }

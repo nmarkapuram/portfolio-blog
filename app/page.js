@@ -101,7 +101,7 @@ export default function Home() {
 
       {/* EXPERTISE */}
       <AnimatedSection>
-        <section>
+        <section id="architecture">
           <h2 className="text-2xl font-semibold mb-6">
             Architecture Domains
           </h2>
