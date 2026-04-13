@@ -108,7 +108,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {domains.map((item) => (
-              <Link href={`/blog/${item.slug}`} key={item.id}>
+              <Link href={`architecture/${item.slug}`} key={item.id}>
               <div className="p-6 border border-white/10 rounded-xl bg-white/5 hover:bg-white/10 transition cursor-pointer">
                 {item.name}
               </div>
