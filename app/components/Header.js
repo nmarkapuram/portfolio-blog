@@ -9,49 +9,44 @@ export default function Header() {
 
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    setScrolled(window.scrollY > 10);
-
     const onScroll = () => {
       setScrolled(window.scrollY > 10);
     };
 
     window.addEventListener("scroll", onScroll);
 
-    // ✅ Only observe on homepage
     if (pathname === "/") {
       const section = document.getElementById("architecture");
 
-      if (!section) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveSection("architecture");
-          } else {
-            setActiveSection("home");
+      if (section) {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setActiveSection("architecture");
+            } else {
+              setActiveSection("home");
+            }
+          },
+          {
+            rootMargin: "-40% 0px -50% 0px",
           }
-        },
-        {
-          rootMargin: "-40% 0px -50% 0px", // 👈 smooth trigger zone
-        }
-      );
+        );
 
-      observer.observe(section);
+        observer.observe(section);
 
-      return () => {
-        observer.disconnect();
-        window.removeEventListener("scroll", onScroll);
-      };
+        return () => {
+          observer.disconnect();
+          window.removeEventListener("scroll", onScroll);
+        };
+      }
     }
 
-    // Other pages
     setActiveSection(null);
 
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
   const navItems = [
@@ -91,8 +86,8 @@ export default function Header() {
           Nagaraja Markapuram
         </Link>
 
-        {/* NAV */}
-        <nav className="ml-auto flex items-center gap-6 text-sm">
+        {/* DESKTOP NAV */}
+        <nav className="ml-auto hidden md:flex items-center gap-6 text-sm">
           {navItems.map((item) => (
             <Link
               key={item.name}
@@ -114,7 +109,41 @@ export default function Header() {
             </Link>
           ))}
         </nav>
+
+        {/* MOBILE HAMBURGER */}
+        <button
+          className="ml-auto md:hidden flex flex-col gap-1.5"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <span className="w-6 h-[2px] bg-white" />
+          <span className="w-6 h-[2px] bg-white" />
+          <span className="w-6 h-[2px] bg-white" />
+        </button>
       </div>
+
+      {/* MOBILE MENU */}
+      {menuOpen && (
+        <div className="md:hidden bg-[#020617]/95 backdrop-blur border-t border-white/10">
+          <nav className="flex flex-col px-6 py-4 gap-4 text-sm">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className={`
+                  ${
+                    isActive(item)
+                      ? "text-blue-400"
+                      : "text-gray-300"
+                  }
+                `}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

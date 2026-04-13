@@ -3,6 +3,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* scroll-padding-top: 100px; */
+    /* header height */
 }
 prose {
     line-height: 1.75;

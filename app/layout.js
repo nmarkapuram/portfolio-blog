@@ -9,7 +9,7 @@ export default function RootLayout({ children }) {
         <Header />
 
         {/* Add top padding because header is fixed */}
-        <main className="pt-24 max-w-6xl mx-auto px-6 py-12 w-full">
+        <main className="pt-20 md:pt-24 max-w-6xl mx-auto px-6 py-12 w-full">
           {children}
         </main>
 
