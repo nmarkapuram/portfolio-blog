@@ -2,15 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // 🔹 Handle scroll + active section
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 10);
@@ -51,21 +53,49 @@ export default function Header() {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Architecture", href: "/#architecture" },
+    { name: "Architecture", href: "/" },
     { name: "Blog", href: "/blog" },
     { name: "Profile", href: "/about" },
   ];
 
   const isActive = (item) => {
-    if (item.href === "/") {
+    if (item.name === "Home") {
       return pathname === "/" && activeSection === "home";
     }
 
-    if (item.href === "/#architecture") {
+    if (item.name === "Architecture") {
       return pathname === "/" && activeSection === "architecture";
     }
 
     return pathname.startsWith(item.href);
+  };
+
+  // 🔥 FIXED navigation handler
+  const handleClick = async (item, e) => {
+    setMenuOpen(false);
+
+    // ✅ Architecture click (works from ANY page)
+    if (item.name === "Architecture") {
+      e.preventDefault();
+
+      if (pathname !== "/") {
+        await router.push("/"); // navigate first
+      }
+
+      // 🔥 Wait for DOM render
+      setTimeout(() => {
+        document
+          .getElementById("architecture")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+
+      return;
+    }
+
+    // ✅ Home click
+    if (item.name === "Home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -92,6 +122,7 @@ export default function Header() {
             <Link
               key={item.name}
               href={item.href}
+              onClick={(e) => handleClick(item, e)}
               className={`
                 relative px-2 py-1 transition
                 ${
@@ -129,14 +160,10 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className={`
-                  ${
-                    isActive(item)
-                      ? "text-blue-400"
-                      : "text-gray-300"
-                  }
-                `}
+                onClick={(e) => handleClick(item, e)}
+                className={`${
+                  isActive(item) ? "text-blue-400" : "text-gray-300"
+                }`}
               >
                 {item.name}
               </Link>
