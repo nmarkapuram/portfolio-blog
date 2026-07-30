@@ -11,11 +11,11 @@ export default function About() {
         </h1>
 
         <p className="text-blue-400 mt-2 text-lg">
-          Principal Frontend Architect
+          Principal Engineer | Performance Enthusiast
         </p>
 
         <p className="text-gray-400 mt-4 max-w-2xl">
-          Designing scalable UI platforms, micro-frontends, and developer
+          Designing scalable platforms, micro-frontends, and developer
           ecosystems for enterprise-scale applications.
         </p>
 
