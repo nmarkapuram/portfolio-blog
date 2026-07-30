@@ -40,11 +40,11 @@ export default function Home() {
 
           <div className="relative border border-white/10 rounded-3xl p-10 md:p-14 bg-white/5 backdrop-blur">
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Frontend Architect
+              Principal Engineer
             </h1>
 
             <p className="text-gray-400 max-w-2xl mb-6">
-              I design scalable frontend systems, micro-frontends, and
+              I design scalable systems, micro-frontends, and
               performance-driven UI platforms.
             </p>
 
@@ -123,7 +123,7 @@ export default function Home() {
         <section className="border border-white/10 rounded-2xl p-8 bg-white/5">
           <h2 className="text-xl font-semibold mb-3">About Me</h2>
           <p className="text-gray-400 max-w-3xl">
-            Frontend Architect experienced in scaling UI systems for large
+            Principal Engineer with experience in scaling systems for large
             teams. Focused on performance, modular architecture, and
             developer experience.
           </p>
